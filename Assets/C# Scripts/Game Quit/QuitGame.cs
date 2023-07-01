@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+
 
 public class QuitGame : MonoBehaviour
 {
