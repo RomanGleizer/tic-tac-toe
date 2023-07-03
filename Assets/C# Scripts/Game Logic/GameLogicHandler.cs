@@ -14,7 +14,7 @@ public class GameLogicHandler : MonoBehaviour
 
     public void DoMove(bool first, bool second, Image figure)
     {
-        if (IsPlayerDoNextMove) _figuresSetter.Draw(figure);
+        _figuresSetter.Draw(figure);
         IsPlayerDoNextMove = first;
         IsComputerDoNextMove = second;
     }

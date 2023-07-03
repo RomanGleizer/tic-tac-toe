@@ -7,20 +7,29 @@ public class CrossesZeroesSetter : MonoBehaviour
     [SerializeField] private ComponentsLoader _loader;
     [SerializeField] private GameStarter _starter;
     [SerializeField] private GameLogicHandler _logicHandler;
-
+    
     private Image _playerDrawFigure;
     private Image _computerDrawFigure;
-    
-    public void DrawElementOnField(int index)
+
+    public void DrawPlayerElementOnField(int index)
+    {
+        InitializeGameField(index);
+        _logicHandler.DoMove(false, true, _playerDrawFigure);
+    }
+
+    public void DrawConputerElementOnField(int index)
+    {
+        InitializeGameField(index);
+        _logicHandler.DoMove(true, false, _computerDrawFigure);
+    }
+
+    private void InitializeGameField(int index)
     {
         var isEdgeShaded = _loader.Statuses.ElementAt(index);
         var cage = _loader.Cages.ElementAt(index);
 
         if (!isEdgeShaded && _starter.IsPlayerStarted) SetFigures(cage.Cross, cage.Zero);
         else if (!isEdgeShaded && _starter.IsComputerStarted) SetFigures(cage.Zero, cage.Cross);
-        
-        if (_logicHandler.IsPlayerDoNextMove) _logicHandler.DoMove(false, true, _playerDrawFigure);
-        
         isEdgeShaded = true;
     }
 

@@ -7,6 +7,7 @@ public class ComponentsLoader : MonoBehaviour
     [SerializeField] private GameField _gameField;
     [SerializeField] private GameStarter _starter;
     [SerializeField] private GameLogicHandler _logicHandler;
+    [SerializeField] private CrossesZeroesSetter _drawer;
 
     public GameField Field => _gameField;
 
@@ -24,5 +25,16 @@ public class ComponentsLoader : MonoBehaviour
 
         _starter.StartCoroutine(nameof(_starter.SelectGameStarter));
         _logicHandler.StartCoroutine(nameof(_logicHandler.SetAbilityMakeMove));
+        StartCoroutine(nameof(DrawComputerFigure));
+    }
+
+    private IEnumerator DrawComputerFigure()
+    {
+        yield return new WaitForSeconds(_starter.StartTime);
+        if (_starter.IsComputerStarted) 
+        {   
+            yield return new WaitForSeconds(3f);
+            _drawer.DrawConputerElementOnField(Random.Range(0, Cages.Count));
+        }   
     }
 }
