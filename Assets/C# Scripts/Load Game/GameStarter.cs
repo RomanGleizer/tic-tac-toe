@@ -11,7 +11,9 @@ public class GameStarter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _moveText;
 
     public bool IsPlayerStarted { get; private set; }
+
     public bool IsComputerStarted { get; private set; }
+
     public float StartTime { get; private set; }
 
     public IEnumerator SelectGameStarter()
@@ -41,4 +43,6 @@ public class GameStarter : MonoBehaviour
         foreach (var elem in textes)
             elem.Key.gameObject.SetActive(elem.Value);
     }
+
+    public void ChangeMoveText(string newText) => _moveText.text = newText;
 }

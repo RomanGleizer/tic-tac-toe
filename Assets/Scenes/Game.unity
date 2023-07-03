@@ -3428,9 +3428,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899decf3f4d68fe48b973ef20006b6f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loader: {fileID: 1485290974}
   _starter: {fileID: 1342351835}
   _logicHandler: {fileID: 1645234678}
+  _field: {fileID: 854788661}
 --- !u!4 &1532677790
 Transform:
   m_ObjectHideFlags: 0

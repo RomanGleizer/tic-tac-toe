@@ -15,11 +15,16 @@ public class GameLogicHandler : MonoBehaviour
     public void DoMove(bool first, bool second, Image figure)
     {
         _figuresSetter.Draw(figure);
+        ChangeOrder(first, second);
+    }
+
+    public void ChangeOrder(bool first, bool second)
+    {
         IsPlayerDoNextMove = first;
         IsComputerDoNextMove = second;
     }
 
-    public IEnumerator SetAbilityMakeMove()
+    public IEnumerator SetAbilityStartGame()
     {
         yield return new WaitForSeconds(_starter.StartTime);
 

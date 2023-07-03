@@ -3,5 +3,5 @@ using System.Collections.Generic;
 
 public class GameField : MonoBehaviour 
 {
-    public readonly Dictionary<Cage, bool> Cages = new Dictionary<Cage, bool>();
+    public readonly List<Cage> Cages = new List<Cage>();
 }
