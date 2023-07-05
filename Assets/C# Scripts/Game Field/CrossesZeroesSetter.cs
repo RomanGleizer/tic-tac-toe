@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,74 +11,45 @@ public class CrossesZeroesSetter : MonoBehaviour
     [SerializeField] private GameLogicHandler _logicHandler;
     [SerializeField] private GameField _field;
 
-    private Image _playerDrawFigure;
-    private Image _computerDrawFigure;
-
     public void DrawPlayerElementOnField(int index)
     {
-        if (_field.Cages[index].Cross.IsActive() || _field.Cages[index].Zero.IsActive()) return;
-        
-        var rndCages = new List<Cage>();
-
-        InitializePlayerGameField(index);
-        _logicHandler.DoMove(false, true, _playerDrawFigure);
-        _starter.ChangeMoveText("Move : Computer");
-
-        DrawComputerElementOnField(); // Косячок туть
+        var currentCage = _field.Cages[index];
+        if (currentCage.Cross.IsActive() || currentCage.Zero.IsActive()) return;
+        DoMove(_starter.IsPlayerStarted ? currentCage.Cross : currentCage.Zero, false, true, "Move : Computer");
+        DrawComputerElementOnField();
     }
 
     public void DrawComputerElementOnField()
     {
-        InitializeComputerGameField();
+        if (_field.Cages.All(x => x.Cross.IsActive() || x.Zero.IsActive())) return;
         StartCoroutine(nameof(DoComputerMove));
     }
 
-    private void InitializePlayerGameField(int index)
+    private void DoMove(Image figure, bool firstOrder, bool secondOrder, string text)
     {
-        var cage = _field.Cages.ElementAt(index);
+        figure.gameObject.SetActive(true);
+        _logicHandler.ChangeOrder(firstOrder, secondOrder);
+        _starter.ChangeMoveText(text);
+    } 
 
-        if (_starter.IsPlayerStarted) SetFiguresForGame(cage.Cross, cage.Zero);
-        else if (_starter.IsComputerStarted) SetFiguresForGame(cage.Zero, cage.Cross);
-    }
-
-    private void InitializeComputerGameField()
+    private Cage GetRandomClearCage()
     {
-        var rndCages = new List<Cage>();
-        
-        foreach (var rndCage in _field.Cages)
-        {
-            if (rndCage.Cross.IsActive() || rndCage.Zero.IsActive()) continue;
-            rndCages.Add(rndCage);
-        }
-        
-        var cage = rndCages[Random.Range(0, rndCages.Count)];
-
-        if (_starter.IsPlayerStarted) SetFiguresForGame(cage.Cross, cage.Zero);
-        else if (_starter.IsComputerStarted) SetFiguresForGame(cage.Zero, cage.Cross);
-    }
-
-    public void Draw(Image figure) => figure.gameObject.SetActive(true);
-
-    private void SetFiguresForGame(Image first, Image second)
-    {
-        _playerDrawFigure = first;
-        _computerDrawFigure = second;
+        return _field.Cages
+            .Where(x => !(x.Cross.IsActive() || x.Zero.IsActive()))
+            .OrderBy(x => Guid.NewGuid())
+            .FirstOrDefault();
     }
 
     private IEnumerator DoComputerMove()
     {
         yield return new WaitForSeconds(2f);
-        _logicHandler.DoMove(true, false, _computerDrawFigure);
-        _starter.ChangeMoveText("Move : Player");
+        var randomCage = GetRandomClearCage();
+        DoMove(_starter.IsComputerStarted ? randomCage.Cross : randomCage.Zero, true, false, "Move : Player");
     }
 
     public IEnumerator DrawComputerFigureOnStart()
     {
         yield return new WaitForSeconds(_starter.StartTime);
-        if (_starter.IsComputerStarted)
-        {
-            InitializeComputerGameField();
-            StartCoroutine(nameof(DoComputerMove));
-        }
+        if (_starter.IsComputerStarted) StartCoroutine(nameof(DoComputerMove));
     }
 }
