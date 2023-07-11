@@ -8,4 +8,8 @@ public class Cage : MonoBehaviour
     public Image Cross => transform.GetChild(0).GetComponent<Image>();
 
     public Image Zero => transform.GetChild(1).GetComponent<Image>();
+
+    public bool IsCrossActive => Cross.IsActive();
+
+    public bool IsZeroActive => Zero.IsActive();
 }

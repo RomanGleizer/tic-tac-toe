@@ -10,18 +10,29 @@ public class CrossesZeroesSetter : MonoBehaviour
     [SerializeField] private GameStarter _starter;
     [SerializeField] private GameLogicHandler _logicHandler;
     [SerializeField] private GameField _field;
+    [SerializeField] private WinHandler _winHandler;
+
+    private void Update() 
+    {
+        foreach (var c in _winHandler.WinCases)
+            if (_winHandler.CheckWin(c.Item1, c.Item2, c.Item3))
+            {
+                _winHandler.ShowWinCanvas();
+                Time.timeScale = 0;
+            }
+    }
 
     public void DrawPlayerElementOnField(int index)
     {
         var currentCage = _field.Cages[index];
-        if (currentCage.Cross.IsActive() || currentCage.Zero.IsActive()) return;
+        if (currentCage.IsCrossActive || currentCage.IsZeroActive) return;
         DoMove(_starter.IsPlayerStarted ? currentCage.Cross : currentCage.Zero, false, true, "Move : Computer");
         DrawComputerElementOnField();
     }
 
     public void DrawComputerElementOnField()
     {
-        if (_field.Cages.All(x => x.Cross.IsActive() || x.Zero.IsActive())) return;
+        if (_field.Cages.All(x => x.IsCrossActive || x.IsZeroActive)) return;
         StartCoroutine(nameof(DoComputerMove));
     }
 
@@ -35,7 +46,7 @@ public class CrossesZeroesSetter : MonoBehaviour
     private Cage GetRandomClearCage()
     {
         return _field.Cages
-            .Where(x => !(x.Cross.IsActive() || x.Zero.IsActive()))
+            .Where(x => !(x.IsCrossActive || x.IsZeroActive))
             .OrderBy(x => Guid.NewGuid())
             .FirstOrDefault();
     }

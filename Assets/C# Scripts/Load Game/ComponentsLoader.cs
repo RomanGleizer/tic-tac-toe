@@ -8,6 +8,7 @@ public class ComponentsLoader : MonoBehaviour
     [SerializeField] private GameStarter _starter;
     [SerializeField] private GameLogicHandler _logicHandler;
     [SerializeField] private CrossesZeroesSetter _drawer;
+    [SerializeField] private WinHandler _winHandler;
 
     private void Awake() 
     {
@@ -20,5 +21,6 @@ public class ComponentsLoader : MonoBehaviour
         _starter.StartCoroutine(nameof(_starter.SelectGameStarter));
         _logicHandler.StartCoroutine(nameof(_logicHandler.SetAbilityStartGame));
         _drawer.StartCoroutine(nameof(_drawer.DrawComputerFigureOnStart));
+        _winHandler.InitializeWinCases();
     }
 }
