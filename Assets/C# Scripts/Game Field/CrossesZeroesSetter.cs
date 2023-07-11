@@ -12,16 +12,6 @@ public class CrossesZeroesSetter : MonoBehaviour
     [SerializeField] private GameField _field;
     [SerializeField] private WinHandler _winHandler;
 
-    private void Update() 
-    {
-        foreach (var c in _winHandler.WinCases)
-            if (_winHandler.CheckWin(c.Item1, c.Item2, c.Item3))
-            {
-                _winHandler.ShowWinCanvas();
-                Time.timeScale = 0;
-            }
-    }
-
     public void DrawPlayerElementOnField(int index)
     {
         var currentCage = _field.Cages[index];
@@ -41,6 +31,10 @@ public class CrossesZeroesSetter : MonoBehaviour
         figure.gameObject.SetActive(true);
         _logicHandler.ChangeOrder(firstOrder, secondOrder);
         _starter.ChangeMoveText(text);
+
+        foreach (var c in _winHandler.WinCases)
+            if (_winHandler.CheckWin(c.Item1, c.Item2, c.Item3))
+                _winHandler.ShowWinCanvas();
     } 
 
     private Cage GetRandomClearCage()

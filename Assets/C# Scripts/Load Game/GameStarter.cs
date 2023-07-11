@@ -16,6 +16,8 @@ public class GameStarter : MonoBehaviour
 
     public float StartTime { get; private set; }
 
+    public TextMeshProUGUI MoveText => _moveText;
+
     public IEnumerator SelectGameStarter()
     {
         StartTime = Random.Range(5f, 11f);

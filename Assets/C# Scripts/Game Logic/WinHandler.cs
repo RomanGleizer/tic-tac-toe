@@ -7,8 +7,10 @@ public class WinHandler : MonoBehaviour
 {
     [SerializeField] private GameField _field;
     [SerializeField] private GameLogicHandler _logicHandler;
+    [SerializeField] private Canvas _gameCanvas;
     [SerializeField] private Canvas _winCanvas;
     [SerializeField] private TextMeshProUGUI _winnerText;
+    [SerializeField] private GameStarter _starter;
     
     private Func<int, int, int, bool> _winConditionWithCrosses;
     private Func<int, int, int, bool> _winConditionWithZeroes;
@@ -39,6 +41,8 @@ public class WinHandler : MonoBehaviour
     public void ShowWinCanvas()
     {
         _winCanvas.gameObject.SetActive(true);
+        _gameCanvas.gameObject.SetActive(false);
+         _starter.MoveText.gameObject.SetActive(false);
         _winnerText.text = _logicHandler.IsPlayerDoNextMove ? "Computer Wins" : "Player Wins";
     }
 
