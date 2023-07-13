@@ -11,30 +11,41 @@ public class CrossesZeroesSetter : MonoBehaviour
     [SerializeField] private GameLogicHandler _logicHandler;
     [SerializeField] private GameField _field;
     [SerializeField] private WinHandler _winHandler;
+    [SerializeField] private DrawHandler _drawHandler;
 
     public void DrawPlayerElementOnField(int index)
     {
         var currentCage = _field.Cages[index];
-        if (currentCage.IsCrossActive || currentCage.IsZeroActive) return;
+        if ((currentCage.IsCrossActive || currentCage.IsZeroActive) || _logicHandler.IsComputerDoNextMove) 
+            return;
         DoMove(_starter.IsPlayerStarted ? currentCage.Cross : currentCage.Zero, false, true, "Move : Computer");
         DrawComputerElementOnField();
     }
 
     public void DrawComputerElementOnField()
     {
-        if (_field.Cages.All(x => x.IsCrossActive || x.IsZeroActive)) return;
         StartCoroutine(nameof(DoComputerMove));
     }
 
     private void DoMove(Image figure, bool firstOrder, bool secondOrder, string text)
     {
+        if (!_starter.MoveText.IsActive()) return;
+
         figure.gameObject.SetActive(true);
         _logicHandler.ChangeOrder(firstOrder, secondOrder);
         _starter.ChangeMoveText(text);
 
         foreach (var c in _winHandler.WinCases)
-            if (_winHandler.CheckWin(c.Item1, c.Item2, c.Item3))
+        {   
+            var isPlayerOrComputerWins = _winHandler.CheckWin(c.Item1, c.Item2, c.Item3);
+            var fieldsCheck = _field.Cages.All(x => x.IsCrossActive || x.IsZeroActive);
+
+            if (fieldsCheck && !isPlayerOrComputerWins)
+                _drawHandler.ShawDrawCanvas();
+
+            if (isPlayerOrComputerWins || (fieldsCheck && isPlayerOrComputerWins)) 
                 _winHandler.ShowWinCanvas();
+        }
     } 
 
     private Cage GetRandomClearCage()

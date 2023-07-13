@@ -40,10 +40,15 @@ public class WinHandler : MonoBehaviour
 
     public void ShowWinCanvas()
     {
-        _winCanvas.gameObject.SetActive(true);
-        _gameCanvas.gameObject.SetActive(false);
-         _starter.MoveText.gameObject.SetActive(false);
-        _winnerText.text = _logicHandler.IsPlayerDoNextMove ? "Computer Wins" : "Player Wins";
+        PerformEndGameLogic(true, false, false, _logicHandler.IsPlayerDoNextMove ? "Computer Wins" : "Player Wins");
+    }
+
+    public void PerformEndGameLogic(bool first, bool second, bool third, string text)
+    {
+        _winCanvas.gameObject.SetActive(first);
+        _gameCanvas.gameObject.SetActive(second);
+        _starter.MoveText.gameObject.SetActive(third);
+        _winnerText.text = text;
     }
 
     public bool CheckWin(int first, int second, int third)
