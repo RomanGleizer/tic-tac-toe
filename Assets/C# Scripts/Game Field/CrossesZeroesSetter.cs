@@ -36,15 +36,23 @@ public class CrossesZeroesSetter : MonoBehaviour
         _starter.ChangeMoveText(text);
 
         foreach (var c in _winHandler.WinCases)
-        {   
+        {
             var isPlayerOrComputerWins = _winHandler.CheckWin(c.Item1, c.Item2, c.Item3);
-            var fieldsCheck = _field.Cages.All(x => x.IsCrossActive || x.IsZeroActive);
+            var isCagesAreFilled = _field.Cages.All(x => x.IsCrossActive || x.IsZeroActive);
 
-            if (fieldsCheck && !isPlayerOrComputerWins)
-                _drawHandler.ShawDrawCanvas();
+            print(isPlayerOrComputerWins);
+            print(isCagesAreFilled);
 
-            if (isPlayerOrComputerWins || (fieldsCheck && isPlayerOrComputerWins)) 
+            if (isPlayerOrComputerWins)
+            {
                 _winHandler.ShowWinCanvas();
+                break;
+            }
+            else if (isCagesAreFilled && !isPlayerOrComputerWins)
+            {
+                _drawHandler.ShawDrawCanvas();
+                break;
+            }
         }
     } 
 
