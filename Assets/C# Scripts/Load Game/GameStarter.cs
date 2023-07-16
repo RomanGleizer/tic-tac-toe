@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using TMPro;
 
 public class GameStarter : MonoBehaviour
@@ -9,6 +10,7 @@ public class GameStarter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _playerText;
     [SerializeField] private TextMeshProUGUI _computerText;
     [SerializeField] private TextMeshProUGUI _moveText;
+    [SerializeField] private Button _pauseButton;
 
     public bool IsPlayerStarted { get; private set; }
 
@@ -29,6 +31,7 @@ public class GameStarter : MonoBehaviour
 
         if (IsPlayerStarted) _moveText.text = "Move : Player";
         else _moveText.text = "Move : Computer";
+        _pauseButton.gameObject.SetActive(true);
 
         ChangeTextesStatuses(
             new List<KeyValuePair<TextMeshProUGUI, bool>>

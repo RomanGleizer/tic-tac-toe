@@ -39,10 +39,7 @@ public class CrossesZeroesSetter : MonoBehaviour
         {
             var isPlayerOrComputerWins = _winHandler.CheckWin(c.Item1, c.Item2, c.Item3);
             var isCagesAreFilled = _field.Cages.All(x => x.IsCrossActive || x.IsZeroActive);
-
-            print(isPlayerOrComputerWins);
-            print(isCagesAreFilled);
-
+            
             if (isPlayerOrComputerWins)
             {
                 _winHandler.ShowWinCanvas();
