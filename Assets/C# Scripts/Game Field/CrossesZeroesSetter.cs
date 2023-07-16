@@ -13,6 +13,8 @@ public class CrossesZeroesSetter : MonoBehaviour
     [SerializeField] private WinHandler _winHandler;
     [SerializeField] private DrawHandler _drawHandler;
 
+    private bool _isWasWin;
+
     public void DrawPlayerElementOnField(int index)
     {
         var currentCage = _field.Cages[index];
@@ -35,6 +37,11 @@ public class CrossesZeroesSetter : MonoBehaviour
         _logicHandler.ChangeOrder(firstOrder, secondOrder);
         _starter.ChangeMoveText(text);
 
+        DoWinCheck();
+    }
+
+    private void DoWinCheck()
+    {
         foreach (var c in _winHandler.WinCases)
         {
             var isPlayerOrComputerWins = _winHandler.CheckWin(c.Item1, c.Item2, c.Item3);
@@ -42,16 +49,15 @@ public class CrossesZeroesSetter : MonoBehaviour
             
             if (isPlayerOrComputerWins)
             {
+                _isWasWin = true;
                 _winHandler.ShowWinCanvas();
                 break;
             }
-            else if (isCagesAreFilled && !isPlayerOrComputerWins)
-            {
-                _drawHandler.ShawDrawCanvas();
-                break;
-            }
         }
-    } 
+
+        if (_field.Cages.All(x => x.IsCrossActive || x.IsZeroActive) && _isWasWin == false)
+            _drawHandler.ShawDrawCanvas();
+    }
 
     private Cage GetRandomClearCage()
     {

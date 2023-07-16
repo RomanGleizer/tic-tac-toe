@@ -5,13 +5,15 @@ using TMPro;
 public class SoundSwitcher : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _volumeText;
+    [SerializeField] private Slider _slider;
     [SerializeField] private Image _soundImage;
     [SerializeField] private Sprite _moreThanZeroSoundIcon;
     [SerializeField] private Sprite _zeroSoundIcon;
 
     private float _volumeValue;
+
+    public float CurrentVolume => _volumeValue;
 
     private void Awake() 
     {
@@ -33,13 +35,9 @@ public class SoundSwitcher : MonoBehaviour
         SaveVolumeValue(_slider.value);
     }
 
-    public void LoadVolumeValue()
-    {
-        _slider.value = PlayerPrefs.GetFloat(nameof(_volumeValue));
-    }
+    private void LoadVolumeValue()
+        => _slider.value = PlayerPrefs.GetFloat(nameof(_volumeValue));
 
-    public void SaveVolumeValue(float value) 
-    {
-        PlayerPrefs.SetFloat(nameof(_volumeValue), value);
-    }
+    private void SaveVolumeValue(float value)
+        => PlayerPrefs.SetFloat(nameof(_volumeValue), value);
 }

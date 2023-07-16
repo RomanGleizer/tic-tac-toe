@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using System;
 using TMPro;
@@ -11,6 +12,10 @@ public class WinHandler : MonoBehaviour
     [SerializeField] private Canvas _winCanvas;
     [SerializeField] private TextMeshProUGUI _winnerText;
     [SerializeField] private GameStarter _starter;
+    [SerializeField] private AudioSource _audio;
+    [SerializeField] private AudioClip _playerWinClip;
+    [SerializeField] private AudioClip _computerWinClip;
+    [SerializeField] private SoundSwitcher _soundSwitcher;
     
     private Func<int, int, int, bool> _winConditionWithCrosses;
     private Func<int, int, int, bool> _winConditionWithZeroes;
@@ -41,6 +46,17 @@ public class WinHandler : MonoBehaviour
     public void ShowWinCanvas()
     {
         PerformEndGameLogic(true, false, false, _logicHandler.IsPlayerDoNextMove ? "Computer Wins" : "Player Wins");
+
+        if (_logicHandler.IsPlayerDoNextMove) PlayClip(_computerWinClip);
+        else PlayClip(_playerWinClip);
+    }
+
+    public void PlayClip(AudioClip clip)
+    {
+        _audio.clip = clip;
+        _audio.volume = 1;
+        _audio.PlayOneShot(clip);
+        StartCoroutine(nameof(ReturnOldVolumeValue));
     }
 
     public void PerformEndGameLogic(bool first, bool second, bool third, string text)
@@ -53,4 +69,10 @@ public class WinHandler : MonoBehaviour
 
     public bool CheckWin(int first, int second, int third)
         => _winConditionWithCrosses(first, second, third) || _winConditionWithZeroes(first, second, third);
+
+    public IEnumerator ReturnOldVolumeValue()
+    {
+        yield return new WaitForSeconds(2f);
+        _audio.volume = _soundSwitcher.CurrentVolume;
+    }
 }

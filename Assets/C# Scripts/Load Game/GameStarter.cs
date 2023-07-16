@@ -28,25 +28,20 @@ public class GameStarter : MonoBehaviour
         IsPlayerStarted = _playerText.IsActive();
         IsComputerStarted = _computerText.IsActive();
         _controller.enabled = false;
+        _pauseButton.gameObject.SetActive(true);
 
         if (IsPlayerStarted) _moveText.text = "Move : Player";
         else _moveText.text = "Move : Computer";
-        _pauseButton.gameObject.SetActive(true);
 
         ChangeTextesStatuses(
-            new List<KeyValuePair<TextMeshProUGUI, bool>>
-            { 
-                new KeyValuePair<TextMeshProUGUI, bool>(_playerText, false),
-                new KeyValuePair<TextMeshProUGUI, bool>(_computerText, false),
-                new KeyValuePair<TextMeshProUGUI, bool>(_moveText, true),
-            }
+            new List<(TextMeshProUGUI, bool)> { (_playerText, false), (_computerText, false), (_moveText, true), }
         );
     }
 
-    private void ChangeTextesStatuses(IEnumerable<KeyValuePair<TextMeshProUGUI, bool>> textes)
+    private void ChangeTextesStatuses(IEnumerable<(TextMeshProUGUI, bool)> textes)
     {
         foreach (var elem in textes)
-            elem.Key.gameObject.SetActive(elem.Value);
+            elem.Item1.gameObject.SetActive(elem.Item2);
     }
 
     public void ChangeMoveText(string newText) => _moveText.text = newText;
