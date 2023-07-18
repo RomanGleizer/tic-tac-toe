@@ -8,19 +8,21 @@ public class WinHandler : MonoBehaviour
 {
     [SerializeField] private GameField _field;
     [SerializeField] private GameLogicHandler _logicHandler;
+    [SerializeField] private CrossesZeroesSetter _drawer;
     [SerializeField] private Canvas _gameCanvas;
     [SerializeField] private Canvas _winCanvas;
     [SerializeField] private TextMeshProUGUI _winnerText;
     [SerializeField] private GameStarter _starter;
     [SerializeField] private AudioSource _audio;
-    [SerializeField] private AudioClip _playerWinClip;
-    [SerializeField] private AudioClip _computerWinClip;
+    [SerializeField] private AudioClip _winClip;
+    [SerializeField] private AudioClip _loseClip;
     [SerializeField] private SoundSwitcher _soundSwitcher;
     
     private Func<int, int, int, bool> _winConditionWithCrosses;
     private Func<int, int, int, bool> _winConditionWithZeroes;
 
     public List<(int, int, int)> WinCases { get; private set; }
+    public AudioClip WinClip => _winClip;
 
     public void InitializeWinCases()
     {
@@ -45,10 +47,12 @@ public class WinHandler : MonoBehaviour
 
     public void ShowWinCanvas()
     {
-        PerformEndGameLogic(true, false, false, _logicHandler.IsPlayerDoNextMove ? "Computer Wins" : "Player Wins");
+        if (GameLoader.IsPlayerPlayWithComputer)
+            PerformEndGameLogic(_logicHandler.IsPlayerDoNextMove ? "Computer Wins" : "Player Wins");
+        else PerformEndGameLogic(_drawer.IsFirstPlayerDoMove ? "Player 2 Wins" : "Player 1 Wins");
 
-        if (_logicHandler.IsPlayerDoNextMove) PlayClip(_computerWinClip);
-        else PlayClip(_playerWinClip);
+        if (_logicHandler.IsPlayerDoNextMove && GameLoader.IsPlayerPlayWithComputer) PlayClip(_loseClip);
+        else PlayClip(_winClip);
     }
 
     public void PlayClip(AudioClip clip)
@@ -59,14 +63,13 @@ public class WinHandler : MonoBehaviour
         StartCoroutine(nameof(ReturnOldVolumeValue));
     }
 
-    public void PerformEndGameLogic(bool first, bool second, bool third, string text)
-    {
-        _winCanvas.gameObject.SetActive(first);
-        _gameCanvas.gameObject.SetActive(second);
-        _starter.MoveText.gameObject.SetActive(third);
+    public void PerformEndGameLogic(string text)
+    {   
+        _winCanvas.gameObject.SetActive(true);
+        _gameCanvas.gameObject.SetActive(false);
+        _starter.MoveText.gameObject.SetActive(false);
         _winnerText.text = text;
     }
-
     public bool CheckWin(int first, int second, int third)
         => _winConditionWithCrosses(first, second, third) || _winConditionWithZeroes(first, second, third);
 

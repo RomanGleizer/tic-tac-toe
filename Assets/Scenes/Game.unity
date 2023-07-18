@@ -947,13 +947,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _field: {fileID: 854788661}
   _logicHandler: {fileID: 1645234678}
+  _drawer: {fileID: 1532677789}
   _gameCanvas: {fileID: 1654607866}
   _winCanvas: {fileID: 1852362567}
   _winnerText: {fileID: 1012340360}
   _starter: {fileID: 1342351835}
   _audio: {fileID: 853033018}
-  _playerWinClip: {fileID: 8300000, guid: d7b03cc7cf7ac654aa9cc960b5e7deb5, type: 3}
-  _computerWinClip: {fileID: 8300000, guid: f8c721fa12195b847a42a83f41188bf6, type: 3}
+  _winClip: {fileID: 8300000, guid: d7b03cc7cf7ac654aa9cc960b5e7deb5, type: 3}
+  _loseClip: {fileID: 8300000, guid: f8c721fa12195b847a42a83f41188bf6, type: 3}
   _soundSwitcher: {fileID: 1654607868}
 --- !u!4 &309148638
 Transform:
@@ -5120,7 +5121,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1342351832}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: fede346f59dc72742bdcd4f695caef87, type: 2}
   m_CullingMode: 0

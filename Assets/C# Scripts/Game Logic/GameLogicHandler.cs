@@ -10,7 +10,7 @@ public class GameLogicHandler : MonoBehaviour
     
     public bool IsComputerDoNextMove { get; private set; }
 
-    public void ChangeOrder(bool first, bool second)
+    public void ChangeOrderInGameWithComputer(bool first, bool second)
     {
         IsPlayerDoNextMove = first;
         IsComputerDoNextMove = second;

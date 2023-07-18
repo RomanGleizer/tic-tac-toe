@@ -22,9 +22,25 @@ public class GameStarter : MonoBehaviour
 
     public IEnumerator SelectGameStarter()
     {
-        StartTime = Random.Range(5f, 11f);
-        yield return new WaitForSeconds(StartTime);
+        if (GameLoader.IsPlayerPlayWithComputer)
+        {
+            _controller.enabled = true;
+            StartTime = Random.Range(5f, 11f);
+            yield return new WaitForSeconds(StartTime);
+            LoadObjectForGameWithComputer();
+            ChangeTextesStatuses(
+                new (TextMeshProUGUI, bool)[] { (_playerText, false), (_computerText, false), (_moveText, true), }
+            );
+        }
+        else
+        {
+            _moveText.gameObject.SetActive(true);
+            _moveText.text = "Move : Player 1";
+        }
+    }
 
+    private void LoadObjectForGameWithComputer()
+    {
         IsPlayerStarted = _playerText.IsActive();
         IsComputerStarted = _computerText.IsActive();
         _controller.enabled = false;
@@ -32,10 +48,6 @@ public class GameStarter : MonoBehaviour
 
         if (IsPlayerStarted) _moveText.text = "Move : Player";
         else _moveText.text = "Move : Computer";
-
-        ChangeTextesStatuses(
-            new List<(TextMeshProUGUI, bool)> { (_playerText, false), (_computerText, false), (_moveText, true), }
-        );
     }
 
     private void ChangeTextesStatuses(IEnumerable<(TextMeshProUGUI, bool)> textes)

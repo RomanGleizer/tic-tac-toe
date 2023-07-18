@@ -6,6 +6,7 @@ public class DrawHandler : MonoBehaviour
 
     public void ShawDrawCanvas()
     {
-        _winHandler.PerformEndGameLogic(true, false, false, "Draw");
+        _winHandler.PerformEndGameLogic("Draw");
+        _winHandler.PlayClip(_winHandler.WinClip);
     }
 }
